@@ -24,8 +24,8 @@ export const products: BaseProduct[] = [
     category: 'tops',
     emoji: '👕',
     views: {
-      front: { maskUrl: '/mockups/tshirt-front.png', shadowUrl: '/mockups/tshirt-front.png', sheenUrl: '' },
-      back: { maskUrl: '/mockups/tshirt-back.png', shadowUrl: '/mockups/tshirt-back.png', sheenUrl: '' },
+      front: { maskUrl: '/mockups/tshirt-front-newmask.png', shadowUrl: '/mockups/tshirt-front.png', sheenUrl: '' },
+      back: { maskUrl: '/mockups/tshirt-back-newmask.png', shadowUrl: '/mockups/tshirt-back.png', sheenUrl: '' },
     },
   },
   {
@@ -38,8 +38,8 @@ export const products: BaseProduct[] = [
     category: 'tops',
     emoji: '🧥',
     views: {
-      front: { maskUrl: '/mockups/hoodie-front.png', shadowUrl: '/mockups/hoodie-front.png', sheenUrl: '' },
-      back: { maskUrl: '/mockups/hoodie-back.png', shadowUrl: '/mockups/hoodie-back.png', sheenUrl: '' },
+      front: { maskUrl: '/mockups/hoodie-front-newmask.png', shadowUrl: '/mockups/hoodie-front.png', sheenUrl: '' },
+      back: { maskUrl: '/mockups/hoodie-back-newmask.png', shadowUrl: '/mockups/hoodie-back.png', sheenUrl: '' },
     },
   },
   {
@@ -65,8 +65,8 @@ export const products: BaseProduct[] = [
     category: 'accessories',
     emoji: '☕',
     views: {
-      front: { maskUrl: '/mockups/mug-front.png', shadowUrl: '/mockups/mug-front.png', sheenUrl: '' },
-      back: { maskUrl: '/mockups/mug-back.png', shadowUrl: '/mockups/mug-back.png', sheenUrl: '' },
+      front: { maskUrl: '/mockups/mug-front-newmask.png', shadowUrl: '/mockups/mug-front.png', sheenUrl: '' },
+      back: { maskUrl: '/mockups/mug-back-newmask.png', shadowUrl: '/mockups/mug-back.png', sheenUrl: '' },
     },
   },
   {
@@ -79,7 +79,7 @@ export const products: BaseProduct[] = [
     category: 'accessories',
     emoji: '📓',
     views: {
-      front: { maskUrl: '/mockups/notebook-mask.png', shadowUrl: '/mockups/notebook-shadow.png', sheenUrl: '' },
+      front: { maskUrl: '/mockups/notebook-newmask.png', shadowUrl: '/mockups/notebook-shadow.png', sheenUrl: '' },
     },
   },
 ];

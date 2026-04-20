@@ -31,10 +31,10 @@ export class CanvasEngine {
     });
 
     this.baseColorRect = new fabric.Rect({
-      left: 0,
-      top: 0,
-      width,
-      height,
+      left: -1000,
+      top: -1000,
+      width: 3000,
+      height: 3000,
       fill: '#ffffff',
       selectable: false,
       evented: false,
@@ -112,13 +112,7 @@ export class CanvasEngine {
       const width = this.canvas.width!;
       const height = this.canvas.height!;
 
-      // Resize shadow natively
-      const resizedShadowCanvas = document.createElement('canvas');
-      resizedShadowCanvas.width = width;
-      resizedShadowCanvas.height = height;
-      resizedShadowCanvas.getContext('2d')!.drawImage(shadowEl, 0, 0, width, height);
-
-      this.shadowLayer = new fabric.FabricImage(resizedShadowCanvas, {
+      this.shadowLayer = new fabric.FabricImage(shadowEl, {
         left: 0,
         top: 0,
         originX: 'left',
@@ -126,17 +120,14 @@ export class CanvasEngine {
         selectable: false,
         evented: false,
         opacity: 0.9,
+        scaleX: width / shadowEl.width,
+        scaleY: height / shadowEl.height,
       });
 
       if (sheenUrl) {
         try {
           const sheenEl = await this.loadImage(sheenUrl);
-          const resizedSheenCanvas = document.createElement('canvas');
-          resizedSheenCanvas.width = width;
-          resizedSheenCanvas.height = height;
-          resizedSheenCanvas.getContext('2d')!.drawImage(sheenEl, 0, 0, width, height);
-
-          this.sheenLayer = new fabric.FabricImage(resizedSheenCanvas, {
+          this.sheenLayer = new fabric.FabricImage(sheenEl, {
             left: 0,
             top: 0,
             originX: 'left',
@@ -144,6 +135,8 @@ export class CanvasEngine {
             selectable: false,
             evented: false,
             opacity: 0.7,
+            scaleX: width / sheenEl.width,
+            scaleY: height / sheenEl.height,
           });
         } catch (e) {
           console.warn("Failed to load sheen layer", e);
