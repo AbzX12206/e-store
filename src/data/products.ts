@@ -8,8 +8,8 @@ export interface BaseProduct {
   category: string;
   emoji: string;
   views: {
-    front: { maskUrl: string; shadowUrl: string; sheenUrl: string };
-    back: { maskUrl: string; shadowUrl: string; sheenUrl: string };
+    front: { maskUrl: string; shadowUrl: string; sheenUrl?: string };
+    back?: { maskUrl: string; shadowUrl: string; sheenUrl?: string };
   };
 }
 
@@ -24,8 +24,8 @@ export const products: BaseProduct[] = [
     category: 'tops',
     emoji: '👕',
     views: {
-      front: { maskUrl: '/mockups/tshirt-front-mask.png', shadowUrl: '/mockups/tshirt-front-shadow.png', sheenUrl: '/mockups/tshirt-front-sheen.png' },
-      back: { maskUrl: '/mockups/tshirt-back-mask.png', shadowUrl: '/mockups/tshirt-back-shadow.png', sheenUrl: '/mockups/tshirt-back-sheen.png' },
+      front: { maskUrl: '/mockups/tshirt-front.png', shadowUrl: '/mockups/tshirt-front.png', sheenUrl: '' },
+      back: { maskUrl: '/mockups/tshirt-back.png', shadowUrl: '/mockups/tshirt-back.png', sheenUrl: '' },
     },
   },
   {
@@ -38,8 +38,8 @@ export const products: BaseProduct[] = [
     category: 'tops',
     emoji: '🧥',
     views: {
-      front: { maskUrl: '/mockups/hoodie-front-mask.png', shadowUrl: '/mockups/hoodie-front-shadow.png', sheenUrl: '/mockups/hoodie-front-sheen.png' },
-      back: { maskUrl: '/mockups/hoodie-back-mask.png', shadowUrl: '/mockups/hoodie-back-shadow.png', sheenUrl: '/mockups/hoodie-back-sheen.png' },
+      front: { maskUrl: '/mockups/hoodie-front.png', shadowUrl: '/mockups/hoodie-front.png', sheenUrl: '' },
+      back: { maskUrl: '/mockups/hoodie-back.png', shadowUrl: '/mockups/hoodie-back.png', sheenUrl: '' },
     },
   },
   {
@@ -53,7 +53,6 @@ export const products: BaseProduct[] = [
     emoji: '🧢',
     views: {
       front: { maskUrl: '/mockups/cap-front-mask.png', shadowUrl: '/mockups/cap-front-shadow.png', sheenUrl: '/mockups/cap-front-sheen.png' },
-      back: { maskUrl: '/mockups/cap-back-mask.png', shadowUrl: '/mockups/cap-back-shadow.png', sheenUrl: '/mockups/cap-back-sheen.png' },
     },
   },
   {
@@ -66,8 +65,8 @@ export const products: BaseProduct[] = [
     category: 'accessories',
     emoji: '☕',
     views: {
-      front: { maskUrl: '/mockups/mug-front-mask.png', shadowUrl: '/mockups/mug-front-shadow.png', sheenUrl: '/mockups/mug-front-sheen.png' },
-      back: { maskUrl: '/mockups/mug-back-mask.png', shadowUrl: '/mockups/mug-back-shadow.png', sheenUrl: '/mockups/mug-back-sheen.png' },
+      front: { maskUrl: '/mockups/mug-front.png', shadowUrl: '/mockups/mug-front.png', sheenUrl: '' },
+      back: { maskUrl: '/mockups/mug-back.png', shadowUrl: '/mockups/mug-back.png', sheenUrl: '' },
     },
   },
   {
@@ -75,13 +74,12 @@ export const products: BaseProduct[] = [
     name: 'Hardcover Notebook',
     description: '200-page lined notebook with custom hardcover. Capture every idea.',
     basePrice: 2000,
-    availableSizes: ['A5', 'A4'],
+    availableSizes: ['A5'],
     availableColors: ['#000000', '#1a1a2e', '#2d3436', '#dfe6e9', '#6c5ce7'],
     category: 'accessories',
     emoji: '📓',
     views: {
-      front: { maskUrl: '/mockups/notebook-front-mask.png', shadowUrl: '/mockups/notebook-front-shadow.png', sheenUrl: '/mockups/notebook-front-sheen.png' },
-      back: { maskUrl: '/mockups/notebook-back-mask.png', shadowUrl: '/mockups/notebook-back-shadow.png', sheenUrl: '/mockups/notebook-back-sheen.png' },
+      front: { maskUrl: '/mockups/notebook-mask.png', shadowUrl: '/mockups/notebook-shadow.png', sheenUrl: '' },
     },
   },
 ];

@@ -58,7 +58,14 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   cart: [],
   selectedLayerId: null,
 
-  setProduct: (product) => set({ activeProduct: product }),
+  setProduct: (product) => {
+    set({ activeProduct: product, activeView: 'front' });
+    const engine = get().engine;
+    if (engine) {
+      const views = product.views['front'];
+      engine.setView(views.maskUrl, views.shadowUrl, views.sheenUrl);
+    }
+  },
   
   setColor: (hex) => {
     set({ selectedColor: hex });
@@ -75,7 +82,9 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
     const engine = state.engine;
     if (product && engine) {
       const views = product.views[view];
-      engine.setView(views.maskUrl, views.shadowUrl);
+      if (views) {
+        engine.setView(views.maskUrl, views.shadowUrl, views.sheenUrl);
+      }
     }
   },
   

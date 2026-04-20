@@ -12,7 +12,6 @@ export class CanvasEngine {
   private canvas: fabric.Canvas;
   private shadowLayer: fabric.FabricImage | null = null;
   private sheenLayer: fabric.FabricImage | null = null;
-  private maskLayer: fabric.FabricImage | null = null;
   private baseColorRect: fabric.Rect;
   private objectMap: Map<string, fabric.Object> = new Map();
   private onSelectionChange?: (obj: fabric.Object | null) => void;
@@ -39,11 +38,11 @@ export class CanvasEngine {
       fill: '#ffffff',
       selectable: false,
       evented: false,
+      globalCompositeOperation: 'source-over',
     });
 
     this.canvas.add(this.baseColorRect);
 
-    // Listen for selection changes
     this.canvas.on('selection:created', () => {
       this.onSelectionChange?.(this.canvas.getActiveObject());
     });
@@ -55,25 +54,49 @@ export class CanvasEngine {
     });
   }
 
+  private sortLayers() {
+    const activeObjects = this.canvas.getActiveObjects();
+    
+    const userObjects = this.canvas.getObjects().filter(o => 
+      o !== this.baseColorRect && o !== this.shadowLayer && o !== this.sheenLayer
+    );
+    
+    this.canvas.remove(...this.canvas.getObjects());
+    
+    // 1. Base Color
+    this.baseColorRect.set('globalCompositeOperation', 'source-over');
+    this.canvas.add(this.baseColorRect);
+    
+    // 2. User Objects
+    userObjects.forEach(obj => {
+      obj.set('globalCompositeOperation', 'source-over');
+      this.canvas.add(obj);
+    });
+    
+    // 3. Shadow Layer
+    if (this.shadowLayer) {
+      this.shadowLayer.set('globalCompositeOperation', 'multiply');
+      this.canvas.add(this.shadowLayer);
+    }
+    
+    // 4. Sheen Layer
+    if (this.sheenLayer) {
+      this.sheenLayer.set('globalCompositeOperation', 'screen');
+      this.canvas.add(this.sheenLayer);
+    }
+    
+    if (activeObjects.length > 0) {
+      this.canvas.setActiveObject(activeObjects[0]);
+    }
+    this.canvas.requestRenderAll();
+  }
+
   public async setBaseColor(hex: string) {
     this.baseColorRect.set({ fill: hex });
-    
-    // Ensure proper layer stacking order
-    this.canvas.bringObjectToFront(this.baseColorRect);
-    
-    // Bring shadow and sheen to very top
-    if (this.shadowLayer) {
-      this.canvas.bringObjectToFront(this.shadowLayer);
-    }
-    if (this.sheenLayer) {
-      this.canvas.bringObjectToFront(this.sheenLayer);
-    }
-    
     this.canvas.requestRenderAll();
   }
 
   public async setView(maskUrl: string, shadowUrl: string, sheenUrl?: string) {
-    // Remove existing layers
     if (this.shadowLayer) {
       this.canvas.remove(this.shadowLayer);
       this.shadowLayer = null;
@@ -82,90 +105,60 @@ export class CanvasEngine {
       this.canvas.remove(this.sheenLayer);
       this.sheenLayer = null;
     }
-    if (this.maskLayer) {
-      this.canvas.remove(this.maskLayer);
-      this.maskLayer = null;
-    }
 
     try {
-      const maskEl = await this.loadImage(maskUrl);
       const shadowEl = await this.loadImage(shadowUrl);
       
-      const scaleX = this.canvas.width! / maskEl.width;
-      const scaleY = this.canvas.height! / maskEl.height;
+      const width = this.canvas.width!;
+      const height = this.canvas.height!;
 
-      // Create product shape layer from the mask and apply it as the canvas clipPath
-      // This perfectly crops the base color and any user uploads to the t-shirt shape
-      this.maskLayer = new fabric.FabricImage(maskEl, {
+      // Resize shadow natively
+      const resizedShadowCanvas = document.createElement('canvas');
+      resizedShadowCanvas.width = width;
+      resizedShadowCanvas.height = height;
+      resizedShadowCanvas.getContext('2d')!.drawImage(shadowEl, 0, 0, width, height);
+
+      this.shadowLayer = new fabric.FabricImage(resizedShadowCanvas, {
         left: 0,
         top: 0,
-        scaleX: scaleX,
-        scaleY: scaleY,
-        originX: 'left',
-        originY: 'top',
-        absolutePositioned: true,
-      });
-      this.canvas.clipPath = this.maskLayer;
-
-      // Create shadow layer with multiply blend
-      this.shadowLayer = new fabric.FabricImage(shadowEl, {
-        left: 0,
-        top: 0,
-        scaleX: this.canvas.width! / shadowEl.width,
-        scaleY: this.canvas.height! / shadowEl.height,
         originX: 'left',
         originY: 'top',
         selectable: false,
         evented: false,
-        globalCompositeOperation: 'multiply',
-        opacity: 0.5,
+        opacity: 0.9,
       });
 
-      // Ensure base is at bottom first
-      this.canvas.bringObjectToFront(this.baseColorRect);
-      
-      // Add shadow on top
-      this.canvas.add(this.shadowLayer);
-
-      // Load and add sheen layer if provided
       if (sheenUrl) {
         try {
           const sheenEl = await this.loadImage(sheenUrl);
-          this.sheenLayer = new fabric.FabricImage(sheenEl, {
+          const resizedSheenCanvas = document.createElement('canvas');
+          resizedSheenCanvas.width = width;
+          resizedSheenCanvas.height = height;
+          resizedSheenCanvas.getContext('2d')!.drawImage(sheenEl, 0, 0, width, height);
+
+          this.sheenLayer = new fabric.FabricImage(resizedSheenCanvas, {
             left: 0,
             top: 0,
-            scaleX: this.canvas.width! / sheenEl.width,
-            scaleY: this.canvas.height! / sheenEl.height,
             originX: 'left',
             originY: 'top',
             selectable: false,
             evented: false,
-            // Screen blend mode for specular highlight effect
-            globalCompositeOperation: 'screen',
             opacity: 0.7,
           });
-          this.canvas.add(this.sheenLayer);
-          this.canvas.bringObjectToFront(this.sheenLayer);
         } catch (e) {
           console.warn("Failed to load sheen layer", e);
         }
       }
       
-      this.canvas.requestRenderAll();
+      this.sortLayers();
     } catch (e) {
       console.error("Failed to load view assets", e);
     }
   }
 
-  private applyMaskToBaseColor() {
-    // Deprecated: Masking is now handled by canvas.clipPath
-  }
-
-  // Upload image to API with FileReader fallback
   public async addImage(file: File, useAPI: boolean = true): Promise<string> {
     const id = generateId();
 
-    // Try API upload first if enabled
     if (useAPI) {
       try {
         const url = await this.uploadImageToAPI(file);
@@ -176,7 +169,6 @@ export class CanvasEngine {
       }
     }
 
-    // FileReader fallback
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = async (e) => {
@@ -229,8 +221,7 @@ export class CanvasEngine {
     this.canvas.add(fImg);
     this.objectMap.set(id, fImg);
     this.canvas.setActiveObject(fImg);
-    this.bringShadowToFront();
-    this.canvas.requestRenderAll();
+    this.sortLayers();
   }
 
   public addText(text: string, options?: TextOptions): string {
@@ -251,8 +242,7 @@ export class CanvasEngine {
     this.canvas.add(textObj);
     this.objectMap.set(id, textObj);
     this.canvas.setActiveObject(textObj);
-    this.bringShadowToFront();
-    this.canvas.requestRenderAll();
+    this.sortLayers();
 
     return id;
   }
@@ -276,7 +266,7 @@ export class CanvasEngine {
 
     this.canvas.remove(obj);
     this.objectMap.delete(id);
-    this.canvas.requestRenderAll();
+    this.sortLayers();
     return true;
   }
 
@@ -284,21 +274,22 @@ export class CanvasEngine {
     const obj = this.objectMap.get(id);
     if (!obj) return false;
 
-    const objects = this.canvas.getObjects().filter(o => o !== this.baseColorRect && o !== this.shadowLayer);
-    const currentIndex = objects.indexOf(obj);
+    const userObjects = this.canvas.getObjects().filter(o => 
+      o !== this.baseColorRect && o !== this.shadowLayer && o !== this.sheenLayer
+    );
+    
+    const currentIndex = userObjects.indexOf(obj);
     if (currentIndex === -1) return false;
 
-    if (newIndex > currentIndex) {
-      for (let i = currentIndex; i < newIndex && i < objects.length - 1; i++) {
-        this.canvas.bringObjectForward(obj);
-      }
-    } else if (newIndex < currentIndex) {
-      for (let i = currentIndex; i > newIndex && i > 0; i--) {
-        this.canvas.sendObjectBackwards(obj);
-      }
-    }
+    userObjects.splice(currentIndex, 1);
+    userObjects.splice(newIndex, 0, obj);
 
-    this.bringShadowToFront();
+    this.canvas.remove(...this.canvas.getObjects());
+    this.canvas.add(this.baseColorRect);
+    userObjects.forEach(o => this.canvas.add(o));
+    if (this.shadowLayer) this.canvas.add(this.shadowLayer);
+    if (this.sheenLayer) this.canvas.add(this.sheenLayer);
+    
     this.canvas.requestRenderAll();
     return true;
   }
@@ -307,9 +298,23 @@ export class CanvasEngine {
     const obj = this.objectMap.get(id);
     if (!obj) return false;
 
-    this.canvas.bringObjectToFront(obj);
-    this.bringShadowToFront();
-    this.canvas.requestRenderAll();
+    const userObjects = this.canvas.getObjects().filter(o => 
+      o !== this.baseColorRect && o !== this.shadowLayer && o !== this.sheenLayer
+    );
+    
+    const currentIndex = userObjects.indexOf(obj);
+    if (currentIndex > -1) {
+      userObjects.splice(currentIndex, 1);
+      userObjects.push(obj);
+      
+      this.canvas.remove(...this.canvas.getObjects());
+      this.canvas.add(this.baseColorRect);
+      userObjects.forEach(o => this.canvas.add(o));
+      if (this.shadowLayer) this.canvas.add(this.shadowLayer);
+      if (this.sheenLayer) this.canvas.add(this.sheenLayer);
+      
+      this.canvas.requestRenderAll();
+    }
     return true;
   }
 
@@ -317,11 +322,23 @@ export class CanvasEngine {
     const obj = this.objectMap.get(id);
     if (!obj) return false;
 
-    this.canvas.sendObjectToBack(obj);
-    // Re-add base and shadow order
-    this.canvas.sendObjectToBack(this.baseColorRect);
-    this.bringShadowToFront();
-    this.canvas.requestRenderAll();
+    const userObjects = this.canvas.getObjects().filter(o => 
+      o !== this.baseColorRect && o !== this.shadowLayer && o !== this.sheenLayer
+    );
+    
+    const currentIndex = userObjects.indexOf(obj);
+    if (currentIndex > -1) {
+      userObjects.splice(currentIndex, 1);
+      userObjects.unshift(obj);
+      
+      this.canvas.remove(...this.canvas.getObjects());
+      this.canvas.add(this.baseColorRect);
+      userObjects.forEach(o => this.canvas.add(o));
+      if (this.shadowLayer) this.canvas.add(this.shadowLayer);
+      if (this.sheenLayer) this.canvas.add(this.sheenLayer);
+      
+      this.canvas.requestRenderAll();
+    }
     return true;
   }
 
@@ -329,10 +346,10 @@ export class CanvasEngine {
     const obj = this.objectMap.get(id);
     if (!obj) return -1;
 
-    const objects = this.canvas.getObjects().filter(o => 
-      o !== this.baseColorRect && o !== this.shadowLayer && this.objectMap.has((o as any).id)
+    const userObjects = this.canvas.getObjects().filter(o => 
+      o !== this.baseColorRect && o !== this.shadowLayer && o !== this.sheenLayer
     );
-    return objects.indexOf(obj);
+    return userObjects.indexOf(obj);
   }
 
   public getActiveObject(): any {
@@ -350,7 +367,7 @@ export class CanvasEngine {
   public clearDesign() {
     this.objectMap.forEach(obj => this.canvas.remove(obj));
     this.objectMap.clear();
-    this.canvas.requestRenderAll();
+    this.sortLayers();
   }
 
   public exportDesign(): string {
@@ -364,10 +381,9 @@ export class CanvasEngine {
     const layers: { id: string; type: 'image' | 'text'; name: string }[] = [];
 
     const objects = this.canvas.getObjects().filter(o => 
-      o !== this.baseColorRect && o !== this.shadowLayer
+      o !== this.baseColorRect && o !== this.shadowLayer && o !== this.sheenLayer
     );
 
-    // Reverse to show top layer first
     for (let i = objects.length - 1; i >= 0; i--) {
       const obj = objects[i];
       const id = (obj as any).id;
@@ -382,12 +398,6 @@ export class CanvasEngine {
     }
 
     return layers;
-  }
-
-  private bringShadowToFront() {
-    if (this.shadowLayer) {
-      this.canvas.bringObjectToFront(this.shadowLayer);
-    }
   }
 
   private loadImage(url: string): Promise<HTMLImageElement> {

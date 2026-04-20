@@ -44,36 +44,55 @@ export default function CanvasWorkspace() {
     refreshLayersFromEngine();
   }, [activeView]);
 
+  const currentMaskUrl = activeProduct?.views[activeView]?.maskUrl;
+
   return (
     <div className="flex-1 relative bg-gray-100 dark:bg-gray-950 flex flex-col transition-colors duration-300">
       {/* View Toggles */}
-      <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10 p-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur border border-gray-200 dark:border-gray-700 rounded-lg flex gap-1 shadow-sm transition-colors duration-300">
-        <button
-          onClick={() => setView('front')}
-          className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
-            activeView === 'front'
-              ? 'bg-brand-500 text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-          }`}
-        >
-          {t.front}
-        </button>
-        <button
-          onClick={() => setView('back')}
-          className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
-            activeView === 'back'
-              ? 'bg-brand-500 text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-          }`}
-        >
-          {t.back}
-        </button>
-      </div>
+      {activeProduct?.views.back && (
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 z-10 p-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur border border-gray-200 dark:border-gray-700 rounded-lg flex gap-1 shadow-sm transition-colors duration-300">
+          <button
+            onClick={() => setView('front')}
+            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              activeView === 'front'
+                ? 'bg-brand-500 text-white shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+            }`}
+          >
+            {t.front}
+          </button>
+          <button
+            onClick={() => setView('back')}
+            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
+              activeView === 'back'
+                ? 'bg-brand-500 text-white shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+            }`}
+          >
+            {t.back}
+          </button>
+        </div>
+      )}
 
       {/* Canvas Area container */}
       <div className="flex-1 flex items-center justify-center p-8 overflow-hidden">
-         <div className="w-[500px] h-[600px] border border-gray-300 dark:border-gray-700 rounded-xl overflow-hidden shadow-xl relative bg-white dark:bg-gray-800/50 transition-colors duration-300">
-             <canvas ref={canvasRef} />
+         <div className="w-[500px] h-[600px] border border-gray-300 dark:border-gray-700 rounded-xl shadow-xl relative bg-white dark:bg-gray-800/50 transition-colors duration-300">
+             {/* The visual masking container for the canvas */}
+             <div 
+               style={{ 
+                 width: '100%', 
+                 height: '100%',
+                 WebkitMaskImage: currentMaskUrl ? `url(${currentMaskUrl})` : 'none',
+                 WebkitMaskSize: '100% 100%',
+                 WebkitMaskRepeat: 'no-repeat',
+                 maskImage: currentMaskUrl ? `url(${currentMaskUrl})` : 'none',
+                 maskSize: '100% 100%',
+                 maskRepeat: 'no-repeat',
+               }}
+               className="w-full h-full"
+             >
+               <canvas ref={canvasRef} />
+             </div>
          </div>
       </div>
       
