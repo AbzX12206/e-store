@@ -1,0 +1,200 @@
+export const translations = {
+  en: {
+    nav: {
+      products: 'Products',
+      about: 'About',
+      contact: 'Contact',
+      startDesigning: 'Start Designing',
+      backToCatalog: 'Back to Catalog'
+    },
+    home: {
+      nowWith: 'Now with 2.5D Preview Technology',
+      designYourOwn: 'Design Your Own',
+      merch: 'Merch',
+      heroDesc: 'Upload your artwork, pick your colors, and see it come to life on premium clothing and accessories — with realistic fabric preview.',
+      startDesigning: 'Start Designing →',
+      browseProducts: 'Browse Products',
+      stats: {
+        types: 'Product Types',
+        colors: 'Color Options',
+        preview: 'Live Preview'
+      },
+      catalogSubtitle: 'Collection',
+      catalogTitle: 'Choose Your Canvas',
+      catalogDesc: 'Pick a base product and make it uniquely yours with our interactive configurator.',
+      aboutSubtitle: 'About',
+      aboutTitle: 'Why RUX Collection?',
+      aboutDesc: 'We believe everyone deserves to wear their creativity. RUX Collection combines cutting-edge 2.5D preview technology with premium materials so you can design custom merch that looks exactly as you imagined — before it\'s even printed.',
+      feature1Title: 'Design Freedom',
+      feature1Desc: 'Upload any image, add text, pick any color — your creativity, zero limits.',
+      feature2Title: '2.5D Preview',
+      feature2Desc: 'See your design wrapped on fabric folds in real time. No surprises.',
+      feature3Title: 'Premium Quality',
+      feature3Desc: 'We print on high-quality materials that look and feel amazing.',
+      rightsReserved: 'All rights reserved.'
+    },
+    config: {
+      total: 'Total',
+      addToCart: 'Add to Cart',
+      addedToCart: '✅ Added to cart! Design downloaded.',
+      design: 'Design',
+      files: 'Files',
+      addElements: 'Add Elements',
+      uploadImage: 'Upload Image',
+      addText: 'Add Text',
+      textProperties: 'Text Properties',
+      font: 'Font',
+      size: 'Size',
+      color: 'Color',
+      layers: 'Layers',
+      clearAll: 'Clear all',
+      noLayers: 'No layers added yet',
+      noFiles: 'Your uploaded files will appear here',
+      colorTitle: 'Color',
+      sizeTitle: 'Size',
+      sizeGuide: 'Size Guide',
+      front: 'Front',
+      back: 'Back',
+      loadingProduct: 'Loading Product...'
+    },
+    chatbot: {
+      assistant: 'RUX Assistant',
+      status: 'Always online',
+      loading: 'Loading assistant...',
+      start: 'Click 👋 below to start',
+      startOver: '← Start over'
+    }
+  },
+  ru: {
+    nav: {
+      products: 'Продукты',
+      about: 'О нас',
+      contact: 'Контакты',
+      startDesigning: 'Создать дизайн',
+      backToCatalog: 'В каталог'
+    },
+    home: {
+      nowWith: 'Теперь с технологией 2.5D превью',
+      designYourOwn: 'Создай свой',
+      merch: 'Мерч',
+      heroDesc: 'Загрузите свой арт, выберите цвета и посмотрите, как он оживает на премиальной одежде и аксессуарах — с реалистичным превью ткани.',
+      startDesigning: 'Начать создание →',
+      browseProducts: 'Смотреть продукты',
+      stats: {
+        types: 'Видов продуктов',
+        colors: 'Вариантов цвета',
+        preview: 'Живое превью'
+      },
+      catalogSubtitle: 'Коллекция',
+      catalogTitle: 'Выбери свой холст',
+      catalogDesc: 'Выберите базовый продукт и сделайте его уникальным с помощью нашего интерактивного конфигуратора.',
+      aboutSubtitle: 'О нас',
+      aboutTitle: 'Почему RUX Collection?',
+      aboutDesc: 'Мы верим, что каждый заслуживает носить свое творчество. RUX Collection объединяет передовую технологию 2.5D превью с премиальными материалами, чтобы вы могли создать уникальный мерч, который выглядит именно так, как вы задумали.',
+      feature1Title: 'Свобода дизайна',
+      feature1Desc: 'Загружайте изображения, добавляйте текст, выбирайте любой цвет — ваше творчество без границ.',
+      feature2Title: '2.5D Превью',
+      feature2Desc: 'Смотрите, как ваш дизайн ложится на складки ткани в реальном времени. Без сюрпризов.',
+      feature3Title: 'Премиум качество',
+      feature3Desc: 'Мы печатаем на высококачественных материалах, которые отлично выглядят и ощущаются.',
+      rightsReserved: 'Все права защищены.'
+    },
+    config: {
+      total: 'Итого',
+      addToCart: 'В корзину',
+      addedToCart: '✅ Добавлено в корзину! Дизайн скачан.',
+      design: 'Дизайн',
+      files: 'Файлы',
+      addElements: 'Добавить элементы',
+      uploadImage: 'Загрузить фото',
+      addText: 'Добавить текст',
+      textProperties: 'Свойства текста',
+      font: 'Шрифт',
+      size: 'Размер',
+      color: 'Цвет',
+      layers: 'Слои',
+      clearAll: 'Очистить все',
+      noLayers: 'Слои еще не добавлены',
+      noFiles: 'Здесь будут ваши загруженные файлы',
+      colorTitle: 'Цвет',
+      sizeTitle: 'Размер',
+      sizeGuide: 'Размерная сетка',
+      front: 'Спереди',
+      back: 'Сзади',
+      loadingProduct: 'Загрузка продукта...'
+    },
+    chatbot: {
+      assistant: 'Ассистент RUX',
+      status: 'Всегда онлайн',
+      loading: 'Загрузка ассистента...',
+      start: 'Нажмите 👋 ниже, чтобы начать',
+      startOver: '← Начать заново'
+    }
+  },
+  kk: {
+    nav: {
+      products: 'Өнімдер',
+      about: 'Біз туралы',
+      contact: 'Байланыс',
+      startDesigning: 'Дизайн жасау',
+      backToCatalog: 'Каталогқа қайту'
+    },
+    home: {
+      nowWith: 'Енді 2.5D алдын ала қарау технологиясымен',
+      designYourOwn: 'Өзіңнің',
+      merch: 'Мерчіңді жаса',
+      heroDesc: 'Өз суретіңізді жүктеңіз, түстерді таңдаңыз және оның премиум киімдер мен аксессуарларда қалай көрінетінін шынайы мата превьюымен көріңіз.',
+      startDesigning: 'Жасауды бастау →',
+      browseProducts: 'Өнімдерді көру',
+      stats: {
+        types: 'Өнім түрлері',
+        colors: 'Түс нұсқалары',
+        preview: 'Тікелей превью'
+      },
+      catalogSubtitle: 'Коллекция',
+      catalogTitle: 'Өз полотноңызды таңдаңыз',
+      catalogDesc: 'Негізгі өнімді таңдап, оны біздің интерактивті конфигураторымызбен бірегей етіңіз.',
+      aboutSubtitle: 'Біз туралы',
+      aboutTitle: 'Неліктен RUX Collection?',
+      aboutDesc: 'Біз әркім өзінің шығармашылығын киюге лайық деп сенеміз. RUX Collection алдыңғы қатарлы 2.5D превью технологиясын премиум материалдармен үйлестіреді.',
+      feature1Title: 'Дизайн еркіндігі',
+      feature1Desc: 'Кез келген суретті жүктеңіз, мәтін қосыңыз, кез келген түсті таңдаңыз — сіздің шығармашылығыңыз, шектеусіз.',
+      feature2Title: '2.5D Превью',
+      feature2Desc: 'Сіздің дизайныңыздың мата қатпарларына қалай түсетінін нақты уақытта көріңіз. Күтпеген тосынсыйларсыз.',
+      feature3Title: 'Премиум сапа',
+      feature3Desc: 'Біз керемет көрінетін және сезілетін жоғары сапалы материалдарға басып шығарамыз.',
+      rightsReserved: 'Барлық құқықтар қорғалған.'
+    },
+    config: {
+      total: 'Барлығы',
+      addToCart: 'Себетке қосу',
+      addedToCart: '✅ Себетке қосылды! Дизайн жүктелді.',
+      design: 'Дизайн',
+      files: 'Файлдар',
+      addElements: 'Элементтер қосу',
+      uploadImage: 'Сурет жүктеу',
+      addText: 'Мәтін қосу',
+      textProperties: 'Мәтін қасиеттері',
+      font: 'Қаріп',
+      size: 'Өлшемі',
+      color: 'Түсі',
+      layers: 'Қабаттар',
+      clearAll: 'Барлығын өшіру',
+      noLayers: 'Қабаттар әлі қосылмаған',
+      noFiles: 'Мұнда сіз жүктеген файлдар пайда болады',
+      colorTitle: 'Түсі',
+      sizeTitle: 'Өлшемі',
+      sizeGuide: 'Өлшемдер кестесі',
+      front: 'Алды',
+      back: 'Арты',
+      loadingProduct: 'Өнімді жүктеу...'
+    },
+    chatbot: {
+      assistant: 'RUX Көмекшісі',
+      status: 'Әрқашан желіде',
+      loading: 'Көмекші жүктелуде...',
+      start: 'Бастау үшін төмендегі 👋 түймесін басыңыз',
+      startOver: '← Қайтадан бастау'
+    }
+  }
+};
