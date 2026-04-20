@@ -28,7 +28,7 @@ export class CanvasEngine {
       width,
       height,
       preserveObjectStacking: true,
-      backgroundColor: '#f8f9fa'
+      backgroundColor: 'transparent'
     });
 
     this.baseColorRect = new fabric.Rect({
@@ -58,18 +58,8 @@ export class CanvasEngine {
   public async setBaseColor(hex: string) {
     this.baseColorRect.set({ fill: hex });
     
-    // Ensure proper layer stacking order:
-    // 1. baseColorRect at bottom
-    // 2. maskLayer (destination-in) cuts the shape
-    // 3. user objects
-    // 4. shadow and sheen on top
-    
+    // Ensure proper layer stacking order
     this.canvas.bringObjectToFront(this.baseColorRect);
-    
-    // Bring mask right after base color
-    if (this.maskLayer) {
-      this.canvas.bringObjectToFront(this.maskLayer);
-    }
     
     // Bring shadow and sheen to very top
     if (this.shadowLayer) {
@@ -104,8 +94,8 @@ export class CanvasEngine {
       const scaleX = this.canvas.width! / maskEl.width;
       const scaleY = this.canvas.height! / maskEl.height;
 
-      // Create product shape layer from the mask
-      // This will be the visible product with the selected color
+      // Create product shape layer from the mask and apply it as the canvas clipPath
+      // This perfectly crops the base color and any user uploads to the t-shirt shape
       this.maskLayer = new fabric.FabricImage(maskEl, {
         left: 0,
         top: 0,
@@ -113,12 +103,9 @@ export class CanvasEngine {
         scaleY: scaleY,
         originX: 'left',
         originY: 'top',
-        selectable: false,
-        evented: false,
+        absolutePositioned: true,
       });
-
-      // Apply mask with destination-in to cut product shape from base color
-      this.applyMaskToBaseColor();
+      this.canvas.clipPath = this.maskLayer;
 
       // Create shadow layer with multiply blend
       this.shadowLayer = new fabric.FabricImage(shadowEl, {
@@ -136,11 +123,6 @@ export class CanvasEngine {
 
       // Ensure base is at bottom first
       this.canvas.bringObjectToFront(this.baseColorRect);
-      
-      // Bring mask after base (destination-in cuts the shape)
-      if (this.maskLayer) {
-        this.canvas.bringObjectToFront(this.maskLayer);
-      }
       
       // Add shadow on top
       this.canvas.add(this.shadowLayer);
@@ -176,19 +158,7 @@ export class CanvasEngine {
   }
 
   private applyMaskToBaseColor() {
-    if (!this.maskLayer) return;
-    
-    // The mask defines the product shape (white on transparent)
-    // Use destination-in composite to cut the base color to the mask shape
-    this.maskLayer.set({
-      globalCompositeOperation: 'destination-in',
-      visible: true,
-      selectable: false,
-      evented: false,
-    });
-    
-    // Add mask after base color - it will cut the shape
-    this.canvas.add(this.maskLayer);
+    // Deprecated: Masking is now handled by canvas.clipPath
   }
 
   // Upload image to API with FileReader fallback
