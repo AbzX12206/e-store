@@ -120,6 +120,7 @@ async function run() {
   await generateMask('mug-front.png', 'mug-front-newmask.png');
   await generateMask('mug-back.png', 'mug-back-newmask.png');
   await generateMask('notebook-shadow.png', 'notebook-newmask.png');
+  await generateMask('cap.png', 'cap-newmask.png');
   console.log('Done!');
 }
 

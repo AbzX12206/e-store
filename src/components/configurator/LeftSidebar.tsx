@@ -67,7 +67,7 @@ export default function LeftSidebar() {
     if (!file || !engine) return;
 
     try {
-      const id = await engine.addImage(file, true); // Try API first
+      const id = await engine.addImage(file);
       addLayer({ id, type: 'image', name: file.name });
       refreshLayersFromEngine();
     } catch (err) {

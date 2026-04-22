@@ -60,32 +60,16 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
 
   setProduct: (product) => {
     set({ activeProduct: product, activeView: 'front' });
-    const engine = get().engine;
-    if (engine) {
-      const views = product.views['front'];
-      engine.setView(views.maskUrl, views.shadowUrl, views.sheenUrl);
-    }
   },
   
   setColor: (hex) => {
     set({ selectedColor: hex });
-    const engine = get().engine;
-    if (engine) engine.setBaseColor(hex);
   },
   
   setSize: (size) => set({ selectedSize: size }),
   
   setView: (view) => {
     set({ activeView: view });
-    const state = get();
-    const product = state.activeProduct;
-    const engine = state.engine;
-    if (product && engine) {
-      const views = product.views[view];
-      if (views) {
-        engine.setView(views.maskUrl, views.shadowUrl, views.sheenUrl);
-      }
-    }
   },
   
   setEngine: (engine) => set({ engine }),
