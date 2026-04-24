@@ -224,7 +224,7 @@ export default function HomePage() {
 
             {/* Telegram */}
             <a
-              href="https://t.me/ruxcollection"
+              href="https://t.me/ErkezhanSerikova"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white hover:bg-sky-600 hover:scale-110 transition-all duration-300"
@@ -237,7 +237,7 @@ export default function HomePage() {
 
             {/* Instagram */}
             <a
-              href="https://instagram.com/ruxcollection"
+              href="https://www.instagram.com/custom.lab.kz?utm_source=ig_contact_invite"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center text-white hover:scale-110 transition-all duration-300"
