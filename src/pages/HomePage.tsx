@@ -217,7 +217,7 @@ export default function HomePage() {
           <div className="flex items-center justify-center gap-6 mb-8">
             {/* WhatsApp */}
             <a
-              href="https://wa.me/77760701214"
+              href="https://wa.me/77760701412"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 hover:scale-110 transition-all duration-300"
