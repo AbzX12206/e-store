@@ -57,8 +57,8 @@ export const products: BaseProduct[] = [
     category: 'accessories',
     emoji: '☕',
     views: {
-      front: { photoUrl: '/mockups/mug-front.png' },
-      back:  { photoUrl: '/mockups/mug-back.png'  },
+      front: { photoUrl: '/mockups/mug-front.png', maskUrl: '/mockups/mug-front-newmask.png' },
+      back:  { photoUrl: '/mockups/mug-back.png', maskUrl: '/mockups/mug-back-newmask.png'  },
     },
   },
   {

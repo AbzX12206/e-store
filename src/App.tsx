@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import ConfiguratorPage from './pages/ConfiguratorPage'
+import ReviewsPage from './pages/ReviewsPage'
 import { useAppStore } from './store/appStore'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/customize/:productId" element={<ConfiguratorPage />} />
+      <Route path="/reviews" element={<ReviewsPage />} />
     </Routes>
   )
 }

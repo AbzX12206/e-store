@@ -26,6 +26,9 @@ export default function Navbar() {
           <a href="#about" className="text-sm text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200">
             {t.about}
           </a>
+          <Link to="/reviews" className="text-sm text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200">
+            {t.reviews}
+          </Link>
           <a href="#contact" className="text-sm text-gray-600 dark:text-gray-300 hover:text-brand-600 dark:hover:text-brand-400 transition-colors duration-200">
             {t.contact}
           </a>

@@ -168,6 +168,47 @@ export default function LeftSidebar() {
               </div>
             </div>
 
+            {/* Print Templates */}
+            <div>
+              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                Print Templates
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <button 
+                  onClick={() => {
+                    if (!engine) return;
+                    const id1 = engine.addText('RUX', { fontSize: 80, fontFamily: 'Impact', fill: '#e94560' });
+                    addLayer({ id: id1, type: 'text', name: 'RUX Logo' });
+                    const id2 = engine.addText('COLLECTION', { fontSize: 30, fontFamily: 'Inter', fill: '#2d3436' });
+                    addLayer({ id: id2, type: 'text', name: 'COLLECTION' });
+                    // Quick hack to offset the second text slightly below
+                    const obj2 = (engine as any).objectMap.get(id2);
+                    if (obj2) {
+                      obj2.top += 60;
+                      (engine as any).canvas.requestRenderAll();
+                    }
+                    refreshLayersFromEngine();
+                  }}
+                  className="flex flex-col items-center justify-center gap-2 py-3 px-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-brand-500 hover:shadow-sm transition-all"
+                >
+                  <span className="font-display font-bold text-lg text-brand-500 leading-none">RUX</span>
+                  <span className="text-[10px] text-gray-500 text-center">Brand Combo</span>
+                </button>
+                <button 
+                  onClick={() => {
+                    if (!engine) return;
+                    const id = engine.addText('EST. 2026', { fontSize: 40, fontFamily: 'Georgia', fill: '#000000' });
+                    addLayer({ id, type: 'text', name: 'EST. 2026' });
+                    refreshLayersFromEngine();
+                  }}
+                  className="flex flex-col items-center justify-center gap-2 py-3 px-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-brand-500 hover:shadow-sm transition-all"
+                >
+                  <span className="font-serif font-bold text-base text-gray-800 dark:text-gray-200 leading-none">EST. 2026</span>
+                  <span className="text-[10px] text-gray-500 text-center">Vintage Text</span>
+                </button>
+              </div>
+            </div>
+
             {/* Text Controls - Only show when text layer selected */}
             {isTextSelected && (
               <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-brand-500/30">

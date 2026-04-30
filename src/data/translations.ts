@@ -4,6 +4,7 @@ export const translations = {
       products: 'Products',
       about: 'About',
       contact: 'Contact',
+      reviews: 'Reviews',
       startDesigning: 'Start Designing',
       backToCatalog: 'Back to Catalog'
     },
@@ -70,6 +71,7 @@ export const translations = {
       products: 'Продукты',
       about: 'О нас',
       contact: 'Контакты',
+      reviews: 'Отзывы',
       startDesigning: 'Создать дизайн',
       backToCatalog: 'В каталог'
     },
@@ -136,6 +138,7 @@ export const translations = {
       products: 'Өнімдер',
       about: 'Біз туралы',
       contact: 'Байланыс',
+      reviews: 'Пікірлер',
       startDesigning: 'Дизайн жасау',
       backToCatalog: 'Каталогқа қайту'
     },

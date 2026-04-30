@@ -87,33 +87,65 @@ export default function CanvasWorkspace() {
       {/* Canvas area */}
       <div className="flex-1 flex items-center justify-center p-8 overflow-hidden">
         <div
-          className="w-[500px] h-[600px] border border-gray-300 dark:border-gray-700 rounded-xl shadow-xl relative overflow-hidden transition-colors duration-300"
-          style={{ backgroundColor: selectedColor }}
+          className="w-[500px] h-[600px] relative transition-colors duration-300 rounded-xl"
         >
-          {/* Layer 1 — product photo (multiply blends with background colour) */}
+          {/* Base Background (transparent, just holds layout) */}
+          <div className="absolute inset-0 bg-transparent" />
+
+          {/* Layer 1 — Product Color (masked) */}
+          {currentView?.maskUrl && (
+            <div
+              className="absolute inset-0 transition-colors duration-300"
+              style={{
+                backgroundColor: selectedColor,
+                WebkitMaskImage: `url(${currentView.maskUrl})`,
+                WebkitMaskSize: 'contain',
+                WebkitMaskPosition: 'center',
+                WebkitMaskRepeat: 'no-repeat',
+                maskImage: `url(${currentView.maskUrl})`,
+                maskSize: 'contain',
+                maskPosition: 'center',
+                maskRepeat: 'no-repeat',
+              }}
+            />
+          )}
+
+          {/* If no mask, fallback to full background */}
+          {!currentView?.maskUrl && (
+            <div
+              className="absolute inset-0 transition-colors duration-300"
+              style={{ backgroundColor: selectedColor }}
+            />
+          )}
+
+          {/* Layer 2 — Fabric.js host (React never touches nodes inside here) */}
+          {/* We mask this layer so designs don't spill outside the garment */}
+          <div
+            className="absolute inset-0 pointer-events-auto"
+            style={currentView?.maskUrl ? {
+              WebkitMaskImage: `url(${currentView.maskUrl})`,
+              WebkitMaskSize: 'contain',
+              WebkitMaskPosition: 'center',
+              WebkitMaskRepeat: 'no-repeat',
+              maskImage: `url(${currentView.maskUrl})`,
+              maskSize: 'contain',
+              maskPosition: 'center',
+              maskRepeat: 'no-repeat',
+            } : {}}
+          >
+             <div ref={fabricHostRef} style={{ width: '100%', height: '100%' }} />
+          </div>
+
+          {/* Layer 3 — Product Photo (multiply blends with everything below) */}
           {currentView?.photoUrl && (
             <img
               src={currentView.photoUrl}
               alt="product"
               draggable={false}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                mixBlendMode: 'multiply',
-                pointerEvents: 'none',
-                userSelect: 'none',
-              }}
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none z-10"
+              style={{ mixBlendMode: 'multiply' }}
             />
           )}
-
-          {/* Layer 2 — Fabric.js host (React never touches nodes inside here) */}
-          <div
-            ref={fabricHostRef}
-            style={{ position: 'absolute', inset: 0, pointerEvents: 'auto' }}
-          />
         </div>
       </div>
 

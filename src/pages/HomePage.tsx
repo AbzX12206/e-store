@@ -58,6 +58,12 @@ export default function HomePage() {
             >
               {t.browseProducts}
             </a>
+            <Link
+              to="/reviews"
+              className="px-8 py-3.5 rounded-full text-base font-semibold border border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:border-yellow-500 transition-all duration-300"
+            >
+              ⭐ Reviews
+            </Link>
           </div>
 
           {/* Stats */}
@@ -211,7 +217,7 @@ export default function HomePage() {
           <div className="flex items-center justify-center gap-6 mb-8">
             {/* WhatsApp */}
             <a
-              href="https://wa.me/77001234567"
+              href="https://wa.me/77760701412"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white hover:bg-green-600 hover:scale-110 transition-all duration-300"
@@ -224,7 +230,7 @@ export default function HomePage() {
 
             {/* Telegram */}
             <a
-              href="https://t.me/ruxcollection"
+              href="https://t.me/ErkezhanSerikova"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-sky-500 flex items-center justify-center text-white hover:bg-sky-600 hover:scale-110 transition-all duration-300"
@@ -237,7 +243,7 @@ export default function HomePage() {
 
             {/* Instagram */}
             <a
-              href="https://instagram.com/ruxcollection"
+              href="https://www.instagram.com/custom.lab.kz?utm_source=ig_contact_invite"
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center text-white hover:scale-110 transition-all duration-300"
