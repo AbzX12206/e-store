@@ -25,9 +25,14 @@ interface ConfiguratorState {
   selectedSize: string;
   activeView: 'front' | 'back';
   layers: Layer[];
+  frontLayers: Layer[];
+  backLayers: Layer[];
+  frontCanvasState: string;  // Serialized canvas JSON
+  backCanvasState: string;
   engine: CanvasEngine | null;
   cart: CartItem[];
   selectedLayerId: string | null;
+  deliveryAddress: DeliveryAddress;
   
   // Actions
   setProduct: (product: BaseProduct) => void;
@@ -36,16 +41,30 @@ interface ConfiguratorState {
   setView: (view: 'front' | 'back') => void;
   setEngine: (engine: CanvasEngine) => void;
   setSelectedLayerId: (id: string | null) => void;
+  setDeliveryAddress: (address: Partial<DeliveryAddress>) => void;
   
   addLayer: (layer: Layer) => void;
   removeLayer: (id: string) => void;
   reorderLayers: (fromIndex: number, toIndex: number) => void;
   clearLayers: () => void;
   refreshLayersFromEngine: () => void;
+  saveViewState: (view: 'front' | 'back') => void;
+  loadViewState: (view: 'front' | 'back') => Promise<void>;
   
   // Cart
   addToCart: (designUrl: string) => void;
   getCartCount: () => number;
+}
+
+export interface DeliveryAddress {
+  fullName: string;
+  phone: string;
+  city: string;
+  street: string;
+  building: string;
+  apartment: string;
+  postalCode: string;
+  notes: string;
 }
 
 export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
@@ -54,12 +73,34 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   selectedSize: 'M',
   activeView: 'front',
   layers: [],
+  frontLayers: [],
+  backLayers: [],
+  frontCanvasState: '',
+  backCanvasState: '',
   engine: null,
   cart: [],
   selectedLayerId: null,
+  deliveryAddress: {
+    fullName: '',
+    phone: '',
+    city: '',
+    street: '',
+    building: '',
+    apartment: '',
+    postalCode: '',
+    notes: '',
+  },
 
   setProduct: (product) => {
-    set({ activeProduct: product, activeView: 'front' });
+    set({ 
+      activeProduct: product, 
+      activeView: 'front',
+      layers: [],
+      frontLayers: [],
+      backLayers: [],
+      frontCanvasState: '',
+      backCanvasState: '',
+    });
   },
   
   setColor: (hex) => {
@@ -68,8 +109,72 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   
   setSize: (size) => set({ selectedSize: size }),
   
-  setView: (view) => {
+  setView: async (view) => {
+    const state = get();
+    const engine = state.engine;
+    if (!engine) return;
+    
+    // Save current view's state before switching
+    const currentCanvasJson = engine.serializeCanvas();
+    if (state.activeView === 'front') {
+      set({ 
+        frontLayers: [...state.layers],
+        frontCanvasState: currentCanvasJson 
+      });
+    } else {
+      set({ 
+        backLayers: [...state.layers],
+        backCanvasState: currentCanvasJson 
+      });
+    }
+    
+    // Switch view
     set({ activeView: view });
+    
+    // Load new view's canvas state
+    const canvasJson = view === 'front' ? state.frontCanvasState : state.backCanvasState;
+    await engine.loadCanvas(canvasJson);
+    
+    // Update layers from loaded canvas
+    const newLayers = engine.getAllLayers();
+    set({ layers: newLayers });
+  },
+  
+  setDeliveryAddress: (address) => {
+    set((state) => ({ 
+      deliveryAddress: { ...state.deliveryAddress, ...address } 
+    }));
+  },
+  
+  saveViewState: (view) => {
+    const state = get();
+    const engine = state.engine;
+    if (!engine) return;
+    
+    const canvasJson = engine.serializeCanvas();
+    if (view === 'front') {
+      set({ 
+        frontLayers: [...state.layers],
+        frontCanvasState: canvasJson 
+      });
+    } else {
+      set({ 
+        backLayers: [...state.layers],
+        backCanvasState: canvasJson 
+      });
+    }
+  },
+  
+  loadViewState: async (view) => {
+    const state = get();
+    const engine = state.engine;
+    if (!engine) return;
+    
+    const canvasJson = view === 'front' ? state.frontCanvasState : state.backCanvasState;
+    await engine.loadCanvas(canvasJson);
+    
+    const newLayers = engine.getAllLayers();
+    set({ layers: newLayers });
   },
   
   setEngine: (engine) => set({ engine }),

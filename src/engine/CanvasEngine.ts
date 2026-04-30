@@ -210,6 +210,31 @@ export class CanvasEngine {
   }
 
   public dispose() { this.canvas.dispose(); }
+
+  // Serialize canvas state for view switching
+  public serializeCanvas(): string {
+    return JSON.stringify(this.canvas.toObject(['id']));
+  }
+
+  // Load canvas state from serialized data
+  public async loadCanvas(json: string): Promise<void> {
+    this.clearDesign();
+    if (!json || json === '[]') return;
+    
+    await new Promise<void>((resolve) => {
+      this.canvas.loadFromJSON(json, () => {
+        // Restore objectMap
+        this.canvas.getObjects().forEach((obj) => {
+          const id = (obj as any).id;
+          if (id) {
+            this.objectMap.set(id, obj);
+          }
+        });
+        this.canvas.requestRenderAll();
+        resolve();
+      });
+    });
+  }
 }
 
 function generateId(): string {

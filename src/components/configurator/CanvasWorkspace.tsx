@@ -71,7 +71,7 @@ export default function CanvasWorkspace() {
           {(['front', 'back'] as const).map((v) => (
             <button
               key={v}
-              onClick={() => setView(v)}
+              onClick={async () => await setView(v)}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
                 activeView === v
                   ? 'bg-brand-500 text-white shadow-sm'
