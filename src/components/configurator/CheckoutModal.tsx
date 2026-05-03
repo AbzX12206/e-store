@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useConfiguratorStore } from '../../store/configuratorStore';
 import { useAppStore } from '../../store/appStore';
+import { translations } from '../../data/translations';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -23,7 +24,9 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
     activeView,
     backCanvasState
   } = useConfiguratorStore();
-  const { language: _language } = useAppStore();
+  const { language } = useAppStore();
+  const t = translations[language].checkout;
+  const tc = translations[language].config;
   
   const [step, setStep] = useState<'address' | 'payment'>('address');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -60,7 +63,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
         {/* Header */}
         <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 p-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {step === 'address' ? 'Delivery Address' : 'Payment'}
+            {step === 'address' ? t.deliveryAddress : t.payment}
           </h2>
           <button 
             onClick={onClose}
@@ -73,7 +76,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
         <div className="p-6 grid md:grid-cols-2 gap-6">
           {/* Left Column - Order Summary */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 dark:text-white">Order Summary</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">{t.orderSummary}</h3>
             
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 space-y-3">
               <div className="flex items-center gap-4">
@@ -87,20 +90,20 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 <div>
                   <p className="font-medium text-gray-900 dark:text-white">{activeProduct.name}</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {activeView === 'front' ? 'Front design' : 'Back design'}
-                    {hasBackDesign && ' + Back design'}
+                    {activeView === 'front' ? t.frontDesign : t.backDesign}
+                    {hasBackDesign && ` + ${t.backDesign}`}
                   </p>
                 </div>
               </div>
               
               <div className="border-t border-gray-200 dark:border-gray-700 pt-3 space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Size:</span>
+                  <span className="text-gray-500 dark:text-gray-400">{tc.sizeTitle}:</span>
                   <span className="font-medium text-gray-900 dark:text-white">{selectedSize}</span>
                 </div>
                 {activeProduct.id !== 'mug-ceramic' && (
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">Color:</span>
+                    <span className="text-gray-500 dark:text-gray-400">{tc.colorTitle}:</span>
                     <span className="font-medium text-gray-900 dark:text-white">{selectedColor}</span>
                   </div>
                 )}
@@ -114,8 +117,8 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                   🎁
                 </div>
                 <div>
-                  <p className="font-medium text-green-900 dark:text-green-400">FREE GIFT</p>
-                  <p className="text-sm text-green-700 dark:text-green-500">Stain remover powder included</p>
+                  <p className="font-medium text-green-900 dark:text-green-400">{t.freeGift}</p>
+                  <p className="text-sm text-green-700 dark:text-green-500">{t.giftDesc}</p>
                 </div>
               </div>
             )}
@@ -123,22 +126,22 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
             {/* Price Breakdown */}
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500 dark:text-gray-400">Product:</span>
+                <span className="text-gray-500 dark:text-gray-400">{t.product}:</span>
                 <span className="text-gray-900 dark:text-white">{basePrice.toLocaleString()} ₸</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500 dark:text-gray-400">Delivery:</span>
+                <span className="text-gray-500 dark:text-gray-400">{t.delivery}:</span>
                 <span className="text-gray-900 dark:text-white">{deliveryPrice.toLocaleString()} ₸</span>
               </div>
               <div className="border-t border-gray-200 dark:border-gray-700 pt-2 flex justify-between font-bold text-lg">
-                <span className="text-gray-900 dark:text-white">Total:</span>
+                <span className="text-gray-900 dark:text-white">{tc.total}:</span>
                 <span className="text-brand-600 dark:text-brand-400">{totalPrice.toLocaleString()} ₸</span>
               </div>
             </div>
             
             {/* Map */}
             <div className="space-y-2">
-              <h4 className="font-medium text-gray-900 dark:text-white">Delivery Location</h4>
+              <h4 className="font-medium text-gray-900 dark:text-white">{t.location}</h4>
               <div className="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 h-48">
                 <iframe
                   width="100%"
@@ -151,7 +154,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 />
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                Aktau, Kazakhstan - Delivery available citywide
+                {t.locationDesc}
               </p>
             </div>
           </div>
@@ -160,11 +163,11 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
           <div>
             {step === 'address' ? (
               <form onSubmit={handleAddressSubmit} className="space-y-4">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Enter Delivery Details</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">{t.enterDetails}</h3>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Full Name *
+                    {t.fullName}
                   </label>
                   <input
                     type="text"
@@ -178,7 +181,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Phone Number *
+                    {t.phone}
                   </label>
                   <input
                     type="tel"
@@ -193,7 +196,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      City
+                      {t.city}
                     </label>
                     <input
                       type="text"
@@ -205,7 +208,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Postal Code
+                      {t.postalCode}
                     </label>
                     <input
                       type="text"
@@ -219,7 +222,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Street Address *
+                    {t.street}
                   </label>
                   <input
                     type="text"
@@ -234,7 +237,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Building/House
+                      {t.building}
                     </label>
                     <input
                       type="text"
@@ -246,7 +249,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Apartment
+                      {t.apartment}
                     </label>
                     <input
                       type="text"
@@ -260,14 +263,14 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Delivery Notes
+                    {t.notes}
                   </label>
                   <textarea
                     value={deliveryAddress.notes}
                     onChange={(e) => setDeliveryAddress({ notes: e.target.value })}
                     className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-brand-500 outline-none resize-none"
                     rows={3}
-                    placeholder="Any special instructions for delivery..."
+                    placeholder={t.notesPlaceholder}
                   />
                 </div>
                 
@@ -275,20 +278,20 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                   type="submit"
                   className="w-full py-3 rounded-xl bg-brand-500 text-white font-semibold hover:bg-brand-600 transition-colors"
                 >
-                  Continue to Payment
+                  {t.continue}
                 </button>
               </form>
             ) : (
               <div className="space-y-4">
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Select Payment Method</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-white mb-4">{t.selectPayment}</h3>
                 
                 {/* Payment Methods */}
                 <div className="space-y-3">
                   <label className="flex items-center gap-3 p-4 border-2 border-brand-500 bg-brand-50 dark:bg-brand-900/20 rounded-xl cursor-pointer">
                     <input type="radio" name="payment" defaultChecked className="w-5 h-5 text-brand-500" />
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900 dark:text-white">Cash on Delivery</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Pay when you receive the order</p>
+                      <p className="font-medium text-gray-900 dark:text-white">{t.cashOnDelivery}</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{t.cashDesc}</p>
                     </div>
                     <span className="text-2xl">💵</span>
                   </label>
@@ -297,7 +300,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                     <input type="radio" name="payment" disabled className="w-5 h-5" />
                     <div className="flex-1">
                       <p className="font-medium text-gray-900 dark:text-white">Kaspi Pay</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Coming soon</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{t.comingSoon}</p>
                     </div>
                     <span className="text-2xl text-yellow-500">K</span>
                   </label>
@@ -306,7 +309,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                     <input type="radio" name="payment" disabled className="w-5 h-5" />
                     <div className="flex-1">
                       <p className="font-medium text-gray-900 dark:text-white">Card Payment</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">Coming soon</p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{t.comingSoon}</p>
                     </div>
                     <span className="text-2xl">💳</span>
                   </label>
@@ -315,12 +318,12 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                 {/* Delivery Address Summary */}
                 <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 mt-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-medium text-gray-900 dark:text-white">Delivery Address</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-white">{t.deliveryAddress}</h4>
                     <button 
                       onClick={() => setStep('address')}
                       className="text-sm text-brand-500 hover:text-brand-600"
                     >
-                      Edit
+                      {t.edit}
                     </button>
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -336,7 +339,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                     onClick={() => setStep('address')}
                     className="flex-1 py-3 rounded-xl border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
                   >
-                    Back
+                    {t.back}
                   </button>
                   <button
                     onClick={handlePayment}
@@ -349,10 +352,10 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                         </svg>
-                        Processing...
+                        {t.processing}
                       </>
                     ) : (
-                      `Pay ${totalPrice.toLocaleString()} ₸`
+                      `${t.pay} ${totalPrice.toLocaleString()} ₸`
                     )}
                   </button>
                 </div>
