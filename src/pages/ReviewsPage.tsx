@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ChatBot from '../components/ChatBot';
+import { useAppStore } from '../store/appStore';
+import { translations } from '../data/translations';
 
 interface Review {
   id: number;
@@ -11,6 +13,9 @@ interface Review {
 }
 
 export default function ReviewsPage() {
+  const { language } = useAppStore();
+  const t = translations[language].reviews;
+
   const [reviews, setReviews] = useState<Review[]>([]);
   const [name, setName] = useState('');
   const [rating, setRating] = useState(5);
@@ -72,19 +77,19 @@ export default function ReviewsPage() {
 
       <section className="pt-32 pb-24 px-6 max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-8 text-center">
-          Customer Reviews
+          {t.title}
         </h1>
 
         {/* Add Review Form */}
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 md:p-8 shadow-sm mb-12">
           <h2 className="text-2xl font-display font-semibold text-gray-900 dark:text-white mb-6">
-            Write a Review
+            {t.writeReview}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Your Name
+                  {t.yourName}
                 </label>
                 <input
                   type="text"
@@ -92,12 +97,12 @@ export default function ReviewsPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-brand-500 transition-colors"
-                  placeholder="John Doe"
+                  placeholder={t.namePlaceholder}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Rating
+                  {t.rating}
                 </label>
                 <div className="flex gap-2 h-[42px] items-center">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -118,7 +123,7 @@ export default function ReviewsPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Your Review
+                {t.yourReview}
               </label>
               <textarea
                 required
@@ -126,7 +131,7 @@ export default function ReviewsPage() {
                 onChange={(e) => setText(e.target.value)}
                 rows={4}
                 className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl px-4 py-3 text-gray-900 dark:text-white outline-none focus:border-brand-500 transition-colors resize-none"
-                placeholder="Share your experience..."
+                placeholder={t.reviewPlaceholder}
               />
             </div>
 
@@ -134,7 +139,7 @@ export default function ReviewsPage() {
               type="submit"
               className="px-8 py-3 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-full transition-colors shadow-lg shadow-brand-500/25 inline-flex items-center gap-2"
             >
-              Submit Review
+              {t.submit}
             </button>
           </form>
         </div>

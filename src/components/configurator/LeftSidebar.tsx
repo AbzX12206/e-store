@@ -171,9 +171,40 @@ export default function LeftSidebar() {
             {/* Print Templates */}
             <div>
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                Print Templates
+                {t.printTemplates}
               </p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2">
+                {/* Image Templates */}
+                {[
+                  { src: '/1.png', name: 'Caspian' },
+                  { src: '/2.png', name: 'AKTAU' },
+                  { src: '/3.png', name: 'Caspian Sea' },
+                ].map((tpl) => (
+                  <button
+                    key={tpl.src}
+                    onClick={async () => {
+                      if (!engine) return;
+                      const id = Math.random().toString(36).substr(2, 9);
+                      try {
+                        await engine.addImageFromUrl(tpl.src, id);
+                        addLayer({ id, type: 'image', name: tpl.name });
+                        refreshLayersFromEngine();
+                      } catch (err) {
+                        console.error('Failed to add template', err);
+                      }
+                    }}
+                    className="flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-brand-500 hover:shadow-sm transition-all group"
+                  >
+                    <img
+                      src={tpl.src}
+                      alt={tpl.name}
+                      className="w-full aspect-square object-contain rounded-lg bg-gray-50 dark:bg-gray-900 p-1 group-hover:scale-105 transition-transform"
+                    />
+                    <span className="text-[10px] text-gray-500 dark:text-gray-400 text-center leading-tight truncate w-full">{tpl.name}</span>
+                  </button>
+                ))}
+
+                {/* Text Templates */}
                 <button 
                   onClick={() => {
                     if (!engine) return;
@@ -189,10 +220,12 @@ export default function LeftSidebar() {
                     }
                     refreshLayersFromEngine();
                   }}
-                  className="flex flex-col items-center justify-center gap-2 py-3 px-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-brand-500 hover:shadow-sm transition-all"
+                  className="flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-brand-500 hover:shadow-sm transition-all"
                 >
-                  <span className="font-display font-bold text-lg text-brand-500 leading-none">RUX</span>
-                  <span className="text-[10px] text-gray-500 text-center">Brand Combo</span>
+                  <div className="w-full aspect-square rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+                    <span className="font-display font-bold text-lg text-brand-500 leading-none">RUX</span>
+                  </div>
+                  <span className="text-[10px] text-gray-500 dark:text-gray-400 text-center leading-tight">Brand Combo</span>
                 </button>
                 <button 
                   onClick={() => {
@@ -201,10 +234,12 @@ export default function LeftSidebar() {
                     addLayer({ id, type: 'text', name: 'EST. 2026' });
                     refreshLayersFromEngine();
                   }}
-                  className="flex flex-col items-center justify-center gap-2 py-3 px-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-brand-500 hover:shadow-sm transition-all"
+                  className="flex flex-col items-center justify-center gap-1.5 p-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-brand-500 hover:shadow-sm transition-all"
                 >
-                  <span className="font-serif font-bold text-base text-gray-800 dark:text-gray-200 leading-none">EST. 2026</span>
-                  <span className="text-[10px] text-gray-500 text-center">Vintage Text</span>
+                  <div className="w-full aspect-square rounded-lg bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+                    <span className="font-serif font-bold text-base text-gray-800 dark:text-gray-200 leading-none">EST. 2026</span>
+                  </div>
+                  <span className="text-[10px] text-gray-500 dark:text-gray-400 text-center leading-tight">Vintage Text</span>
                 </button>
               </div>
             </div>

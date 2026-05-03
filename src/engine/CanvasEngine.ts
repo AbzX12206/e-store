@@ -73,7 +73,7 @@ export class CanvasEngine {
     });
   }
 
-  private async addImageFromUrl(url: string, id: string): Promise<void> {
+  public async addImageFromUrl(url: string, id: string): Promise<void> {
     const imgEl = await this.loadImage(url);
     const fImg = new fabric.FabricImage(imgEl, {
       left: this.canvas.width! / 2,
