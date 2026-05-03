@@ -62,7 +62,7 @@ export default function HomePage() {
               to="/reviews"
               className="px-8 py-3.5 rounded-full text-base font-semibold border border-yellow-400 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 hover:border-yellow-500 transition-all duration-300"
             >
-              ⭐ Reviews
+              ⭐ {translations[language].nav.reviews}
             </Link>
           </div>
 
