@@ -32,8 +32,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
   
   if (!isOpen || !activeProduct) return null;
   
-  // Check if product is clothing (tops category)
-  const isClothing = activeProduct.category === 'tops';
+
   const hasBackDesign = activeProduct.views.back && backCanvasState && backCanvasState !== '[]' && backCanvasState !== '';
   
   // Calculate total
@@ -109,18 +108,7 @@ export default function CheckoutModal({ isOpen, onClose, designUrl, onConfirm }:
               </div>
             </div>
             
-            {/* Stain Remover Gift - Only for clothing */}
-            {isClothing && (
-              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center text-lg">
-                  🎁
-                </div>
-                <div>
-                  <p className="font-medium text-green-900 dark:text-green-400">{t.freeGift}</p>
-                  <p className="text-sm text-green-700 dark:text-green-500">{t.stainRemover}</p>
-                </div>
-              </div>
-            )}
+
             
             {/* Price Breakdown */}
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 space-y-2">

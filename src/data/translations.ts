@@ -84,8 +84,7 @@ export const translations = {
       backDesign: 'Back design',
       size: 'Size:',
       color: 'Color:',
-      freeGift: 'FREE GIFT',
-      stainRemover: 'Stain remover powder included',
+
       product: 'Product:',
       delivery: 'Delivery:',
       total: 'Total:',
@@ -199,8 +198,7 @@ export const translations = {
       backDesign: 'Дизайн сзади',
       size: 'Размер:',
       color: 'Цвет:',
-      freeGift: 'ПОДАРОК',
-      stainRemover: 'Пятновыводитель в подарок',
+
       product: 'Товар:',
       delivery: 'Доставка:',
       total: 'Итого:',
@@ -314,8 +312,7 @@ export const translations = {
       backDesign: 'Артқы дизайн',
       size: 'Өлшемі:',
       color: 'Түсі:',
-      freeGift: 'ТЕГІН СЫЙЛЫҚ',
-      stainRemover: 'Дақ кетіргіш ұнтағы қосылған',
+
       product: 'Өнім:',
       delivery: 'Жеткізу:',
       total: 'Барлығы:',

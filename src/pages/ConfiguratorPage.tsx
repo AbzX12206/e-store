@@ -81,13 +81,12 @@ export default function ConfiguratorPage() {
       URL.revokeObjectURL(a.href);
 
       // Open WhatsApp with pre-filled order message
-      const giftText = activeProduct.category === 'tops' ? '\n🎁 Stain remover powder included (FREE)' : '';
       const msg = encodeURIComponent(
         `Hello! I'd like to order:\n` +
         `• Product: ${activeProduct.name}\n` +
         `• Size: ${selectedSize}\n` +
         `• Color: ${selectedColor}\n` +
-        `• Price: ${activeProduct.basePrice.toLocaleString()} ₸${giftText}\n\n` +
+        `• Price: ${activeProduct.basePrice.toLocaleString()} ₸\n\n` +
         `📍 Delivery to:\n` +
         `${deliveryAddress.fullName}\n` +
         `${deliveryAddress.street} ${deliveryAddress.building} ${deliveryAddress.apartment || ''}\n` +
